@@ -1,17 +1,17 @@
-import { FormGroup } from "@angular/forms";
+import { FormArray, FormGroup, ValidationErrors } from "@angular/forms";
 
 export class FormUtils {
 
   static isVerifield(form: FormGroup, field: string): boolean {
+    console.log('hello')
     return (!!form.controls[field].errors && form.controls[field].touched);
   }
 
-  static getFiedErrors(form: FormGroup, field: string): string | null {
+  static isVerifieldArray(form: FormArray, index: number): boolean {
+    return ( !!form.controls[index].errors && form.controls[index].touched );
+  }
 
-    if(!form.controls[field]) return null;
-
-    const errors = form.controls[field].errors ?? {};
-
+  static getMessageErrror(errors: ValidationErrors): string | null {
     for (const error of Object.keys(errors)) {
       switch (error) {
         case 'required':
@@ -24,5 +24,38 @@ export class FormUtils {
     };
 
     return null;
+  }
+
+  static getFiedErrors(form: FormGroup, field: string): string | null {
+
+    if(!form.controls[field]) return null;
+
+    const errors = form.controls[field].errors ?? {};
+
+    return FormUtils.getMessageErrror(errors);
+  }
+
+  static getFieldErrorsArray(form: FormArray, index: number): string | null {
+    if(!form.controls[index]) return null;
+
+    const errors = form.controls[index].errors ?? {};
+
+    return FormUtils.getMessageErrror(errors);
+  }
+
+  static getFieldErrorsGroupArray(form: FormGroup, field: string): string | null {
+
+    console.log('getFieldErrorsGroupArray', form.controls[field]);
+    if(!form.controls[field]) return null;
+
+    console.log('mani')
+    const errors = form.controls[field].errors ?? {};
+
+    switch (Object.keys(errors)[0]) {
+      case 'minlength':
+        return `Se requieren minimo ${errors['minlength'].requiredLength} juegos favoritos`;
+    }
+
+    return null
   }
 }
