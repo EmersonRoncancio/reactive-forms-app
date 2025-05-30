@@ -3,7 +3,6 @@ import { FormArray, FormGroup, ValidationErrors } from "@angular/forms";
 export class FormUtils {
 
   static isVerifield(form: FormGroup, field: string): boolean {
-    console.log('hello')
     return (!!form.controls[field].errors && form.controls[field].touched);
   }
 
@@ -20,6 +19,8 @@ export class FormUtils {
           return `Minimo ${errors['minlength'].requiredLength} caracteres`;
         case 'min':
           return `El valor minimo es ${errors['min'].min}`;
+        case 'email':
+          return 'El correo no es valido';
       }
     };
 
@@ -48,7 +49,6 @@ export class FormUtils {
     console.log('getFieldErrorsGroupArray', form.controls[field]);
     if(!form.controls[field]) return null;
 
-    console.log('mani')
     const errors = form.controls[field].errors ?? {};
 
     switch (Object.keys(errors)[0]) {
