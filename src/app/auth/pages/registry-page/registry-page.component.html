@@ -98,13 +98,13 @@
 
       <div class="row">
         <div class="col">
-          <button
-            class="btn btn-primary float-end"
-            type="submit"
-            [disabled]="myForm.invalid"
-          >
-            Crear
-          </button>
+          <button class="btn btn-primary float-end" type="submit">Crear</button>
+
+          @if(myForm.errors && myForm.markAllAsTouched()) {
+          <span class="form-text text-danger">
+            Las contraseñas no coinciden
+          </span>
+          }
         </div>
       </div>
     </form>
@@ -113,8 +113,11 @@
 
 <!-- <h2>Form Valid:</h2>
 <h2>Form Status:</h2>
-<h2>Form Pending:</h2>
-<h2>Form errors</h2> -->
+<h2>Form Pending:</h2>-->
+<h2>Form errors</h2>
+<pre>{{ myForm.errors | json }}</pre>
+
+<h2>Form value</h2>
 <pre>{{ myForm.value | json }}</pre>
 
 <h5>Nombre</h5>

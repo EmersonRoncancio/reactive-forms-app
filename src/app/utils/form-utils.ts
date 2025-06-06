@@ -1,4 +1,4 @@
-import { FormArray, FormGroup, ValidationErrors } from "@angular/forms";
+import { AbstractControl, FormArray, FormGroup, ValidationErrors } from "@angular/forms";
 
 export class FormUtils {
 
@@ -23,6 +23,10 @@ export class FormUtils {
           return `Minimo ${errors['minlength'].requiredLength} caracteres`;
         case 'min':
           return `El valor minimo es ${errors['min'].min}`;
+        case 'isEqual':
+          return 'Las contraseñas no coinciden';
+        case 'nameBlock':
+          return 'El nombre no es valido';
         case 'email':
           return 'El correo no es valido';
       }
@@ -61,5 +65,35 @@ export class FormUtils {
     }
 
     return null
+  }
+
+   static isFieldOneEqualFieldTwo(field: string, field2: string) {
+    return (formGroup: AbstractControl)=>{
+      const fieldValue1 = formGroup.get(field)?.value;
+      const fieldValue2 = formGroup.get(field2)?.value;
+
+      if (fieldValue1 !== fieldValue2) {
+        return {
+          isEqual: false,
+        }
+      } else {
+        return null;
+      }
+    }
+  }
+
+  static valitadeNameBlock(control: AbstractControl): ValidationErrors | null {
+    const value = control.value as string;
+
+    console.log('valitadeNameBlock', typeof value, value);
+
+    if(value == "Emerson Roncancio"){
+      console.log('valitadeNameBlock', 'Nombre bloqueado');
+      return {
+        nameBlock: true
+      }
+    }else {
+      return null;
+    }
   }
 }
